@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/adminHeader'); %>
+    <body>
+    <%- include('partials/adminNav'); %>
+        <div class="container">
+            <% if (carts.length > 0) { %>
+                <h4>Number of orders : <%= carts.length %></h4>
+                <hr>
+                <% for(let cart of carts) {%>
+                    <!-- cutomer data here -->
+                   <div class="border border-dark rounded-sm my-4">
+                    <table class="table table-dark">
+                        <thead>
+                          <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Adress</th>
+                            <th scope="col">Issued at</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><%= cart.customerDetails.name %></td>
+                            <td><%= cart.customerDetails.email %></td>
+                            <td><%= cart.customerDetails.phone %></td>
+                            <td><%= cart.customerDetails.address %></td>
+                            <td><%= cart.customerDetails.timestamp %></td>
+                          </tr>
+                          <tr>
+                            <td class="font-weight-bolder">Total price :  <%= cart.totalPrice %></td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                    <% for(let item of cart.items) {%>
+                        <ul class="list-unstyled px-3">
+                            <li class="media">
+                              <img src="/<%= item.product.imageUrl %>" class="mr-3" width="100" height="100">
+                              <div class="media-body">
+                                <h6 class="mt-0 mb-1">Brand name : <%= item.product.name %></h6>
+                                <h6>Price : <%= item.product.price %></h6>
+                                <h6>Amount : <%= item.amount %></h6>
+                                <p>Description : <%= item.product.description %></p>
+                              </div>
+                            </li>
+                        </ul>    
+                   <% } %>
+                  </div>
+                 <% } %>
+              <% }else{ %>
+                    <h2 class="text-center my-5">"No orders were placed!"</h2>
+                 <% } %>       
+        </div>
+    <%- include('partials/adminFooter'); %>
+    </body>
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+    <%- include('partials/head'); %>
+  <body>
+    <%- include('partials/navbar'); %>
+      <div class="container">
+        <% if(items.length > 0){ %>
+          <h5 class="my-3">Your Cart</h5>
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Price</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+          <% for (let item of items) { %>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col"><%= item.product.name %></th>
+              <th scope="col"><%= item.amount %></th>
+              <th scope="col"><%= item.product.price * item.amount%>$</th>
+              <th scope="col">
+                <form action="/cart/products/delete" method="POST">
+                 <input type="submit" name="delete" value="Delete" class="btn btn-danger">
+                 <input type="hidden" value="<%= item.id %>" name="itemId">
+                </form>
+              </th>
+            </tr>
+          <% } %>
+          <table class="table table-borderless table-info">
+            <tbody>
+              <tr>
+                <th scope="row">Total Price</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="font-weight-bolder"><%= total %>$</td>
+              </tr>
+            </tbody>
+          </table>
+          <a href="/cart/order" class="btn btn-success btn-lg btn-block">Continue Your Order</a>
+       <% } else{ %>
+          <h4 class="text-center font-weight-bolder my-5">"Your cart is empty!"</h4>
+           <% } %>
+          </tbody>
+        </table>
+      </div>
+    <%- include('partials/footer'); %>
+  </body>
+</html>
+
+
+
+
+
+
+<!-- <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>Larry</td>
+      <td>the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table> -->

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+    <%- include('partials/head'); %>
+  <body>
+    <%- include('partials/navbar'); %>
+    <% if (locals.message) { %>
+      <div class="alert alert-danger" role="alert">
+         <%= message %>
+      </div>
+  <% } %>
+    <div class="container-xl">
+      <form action="/" method="GET">
+        <div class="input-group mt-3">
+          <select class="custom-select" name="category">
+            <option value="all">All</option>
+            <option value="men">Men</option>
+            <option value="women">Women</option>
+            <option value="kids">Kids</option>
+          </select>
+          <div class="input-group-append">
+            <input class="btn btn-outline-secondary" type="submit" value="filter">
+          </div>
+        </div>
+      </form>
+      <% if (prods.length > 0) {%>
+        <div class="card-columns mt-3">
+            <% for (let product of prods) { %>
+              <div class="col mb-4" >
+                <div class="card">
+                  <img src="/<%= product.imageUrl %>" class="card-img-top img-thumbnail" alt="<%= product.name %>">
+                  <div class="card-body">
+                    <h5 class="card-title"><%= product.name %></h5>
+                    <p class="card-text"><%= product.price %>$</p>
+                     <form action="/cart/products" method="POST">
+                        <input type="number" name="amount" placeholder="amount" class="form-control" min="1">
+                        <button type="submit" class="btn btn-outline-success btn-lg btn-block my-1">Add to cart</button>
+                        <input type="hidden" name="productId" value="<%= product._id %>">
+                     </form>   
+                     <form action="/product/<%= product._id %>" method="GET">
+                        <button type="submit" class="btn btn-outline-info btn-lg btn-block my-1">Details</button>
+                        <input type="hidden" name="id" value="<%= product._id %>">
+                     </form>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+        </div>  
+      <% } else { %>
+        <h4 class="mt-5 text-center">"No Products Found!"</h4>
+        <% } %>    
+      
+    </div>
+
+    <%- include('partials/footer'); %>
+  </body>
+</html>

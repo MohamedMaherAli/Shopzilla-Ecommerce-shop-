@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/adminHeader'); %>
+    <body>
+    <%- include('partials/adminNav'); %>
+        <div class="container">
+            <h1>Products</h1>
+            <% if (prods.length > 0) {%>
+                <div class="card-columns">
+                    <% for (let product of prods) { %>
+
+                        <div class="col mb-4">
+                            <div class="card">
+                              <img src="/<%= product.imageUrl %>" class="card-img-top img-thumbnail" alt="...">
+                              <div class="card-body">
+                                <h5 class="card-title"><%= product.name %></h5>
+                                <p class="card-text"><%= product.price %>$</p>
+                                 <form action="/admin/products/edit/<%= product._id %>">
+                                    <button type="submit" class="btn btn-outline-success btn-lg btn-block my-1">Edit</button>
+                                    <input type="hidden" name="id" value="<%= product._id %>">
+                                 </form>   
+                                 <form action="/admin/products/delete" method="POST">
+                                    <button type="submit" class="btn btn-outline-danger btn-lg btn-block my-1">Delete</button>
+                                    <input type="hidden" name="id" value="<%= product._id %>">
+                                 </form>
+                              </div>
+                            </div>
+                          </div>
+
+                    <% } %>
+                </div>  
+            <% } else { %>
+                <h4 class="mt-5 text-center">"No Products Found!"</h4>
+                <% } %>    
+        </div>
+    <%- include('partials/adminFooter'); %>
+    </body>
+</html>
