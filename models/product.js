@@ -32,21 +32,5 @@ const productSchema = new mongoose.Schema(
 	}
 );
 
-productSchema.statics.getAllProducts = async () => {
-	const products = await Product.find();
-	if (!products) {
-		return [];
-	}
-	return products;
-};
-
-productSchema.statics.getProductsByCategory = async (category) => {
-	const products = await Product.find({ category });
-	if (!products) {
-		return [];
-	}
-	return products;
-};
-
 const Product = mongoose.model('Product', productSchema);
 module.exports = Product;

@@ -2,6 +2,7 @@ const Product = require('../models/product');
 const Cart = require('../models/cart');
 const fs = require('fs');
 
+const ITEMS_PER_PAGE = 2;
 //Gets Admin Main Page
 exports.getAdminMainPage = (req, res) => {
 	res.render('adminPanel', {
@@ -13,12 +14,22 @@ exports.getAdminMainPage = (req, res) => {
 //Gets Admin Products Page
 exports.getAdminProductsPage = async (req, res) => {
 	try {
-		const products = await Product.find({});
+		const allProducts = await Product.find().countDocuments();
+		const page = +req.query.page || 1;
+		const products = await Product.find().skip((page - 1) * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE);
+
 		res.render('adminProducts', {
 			prods: products,
-			pageTitle: 'Admin Products'
+			pageTitle: 'Admin Products',
+			currentPage: page,
+			hasNextPage: allProducts > page * ITEMS_PER_PAGE,
+			hasPreviousPage: page > 1,
+			nextPage: page + 1,
+			previousPage: page - 1,
+			lastPage: Math.ceil(allProducts / ITEMS_PER_PAGE)
 		});
 	} catch (e) {
+		console.log(e);
 		res.send(e);
 	}
 };
