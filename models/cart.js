@@ -14,6 +14,7 @@ const cartSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false
 	},
+	warningMessages: [ { type: String } ],
 	customerDetails: {
 		name: {
 			type: String,

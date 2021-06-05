@@ -108,6 +108,21 @@ exports.postEditProductPage = async (req, res) => {
 exports.postDeleteProduct = async (req, res) => {
 	try {
 		const product = await Product.findById(req.body.id);
+		const carts = await Cart.find({ orderPlaced: true });
+		for (let cart of carts) {
+			let amount = 0;
+			cart.items = cart.items.filter((item) => {
+				if (item.id === req.body.id) {
+					amount = item.amount;
+					cart.warningMessages.push(`WARNING "A Product was ordered but then deleted from database"
+					product details : Price : (${product.price}) - name : (${product.name}) - category : (${product.category}) - amount ordered (${item.amount})
+					`);
+				}
+				return item.id !== req.body.id;
+			});
+			cart.totalPrice -= product.price * amount;
+			await cart.save();
+		}
 		fs.unlinkSync(`images/${product.imageUrl}`);
 		await Product.findByIdAndDelete(req.body.id);
 		res.redirect('/admin/products');
@@ -120,7 +135,6 @@ exports.postDeleteProduct = async (req, res) => {
 //Get admin orders page
 exports.getAdminOrderPage = async (req, res) => {
 	const carts = await Cart.find({ orderPlaced: true });
-
 	//passing product info into item object so we can render the data to the user
 	for (let cart of carts) {
 		for (let item of cart.items) {
@@ -132,4 +146,15 @@ exports.getAdminOrderPage = async (req, res) => {
 		carts: carts,
 		pageTitle: 'Admin Orders'
 	});
+};
+
+//Delete an order
+exports.postDeleteOrder = async (req, res) => {
+	try {
+		await Cart.findByIdAndDelete(req.body.cartId);
+		res.redirect('/admin/orders');
+	} catch (e) {
+		console.log(e);
+		res.send(e);
+	}
 };

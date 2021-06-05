@@ -23,4 +23,7 @@ router.post('/admin/products/delete', auth, adminController.postDeleteProduct);
 //Get admin orders page
 router.get('/admin/orders', auth, adminController.getAdminOrderPage);
 
+//Post admin Delete order
+router.post('/admin/orders/delete', auth, adminController.postDeleteOrder);
+
 module.exports = router;
