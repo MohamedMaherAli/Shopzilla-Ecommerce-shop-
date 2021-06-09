@@ -4,10 +4,8 @@
 	"description": "Ecommerce Website",
 	"main": "index.js",
 	"scripts": {
+		"start": "node index.js",
 		"dev": "env-cmd ./config/.env.dev nodemon index.js"
-	},
-	"jest": {
-		"testEnvironment": "node"
 	},
 	"keywords": [],
 	"author": "Mohamed Maher",
